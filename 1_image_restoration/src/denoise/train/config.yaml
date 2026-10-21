@@ -1,0 +1,18 @@
+seed: 42
+
+data:
+  input_dir: "data/noisy/train_noisy_001"
+  gt_dir: "data/processed/train_256"
+  batch_size: 16
+  val_split: 0.05
+  num_workers: 4
+
+model:
+  name: "nafnet_001"
+  output_dir: "models"
+  width: 32
+
+training:
+  epochs: 100
+  lr: 0.001
+  early_stopping_patience: 20
