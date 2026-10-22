@@ -1,14 +1,14 @@
 seed: 42
 
 data:
-  input_dir: "data/noisy/train_noisy_001"
+  input_dir: "data/noisy/train_noisy_003"
   gt_dir: "data/processed/train_256"
   batch_size: 16
   val_split: 0.1
   num_workers: 4
 
 model:
-  name: "nafnet_001"
+  name: "nafnet_003"
   output_dir: "models"
   width: 32
 

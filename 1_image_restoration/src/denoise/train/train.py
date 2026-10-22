@@ -68,7 +68,7 @@ def main() -> None:
         monitor="val_psnr",
         mode="max",
         save_top_k=1,
-        save_last=True,
+        save_weights_only=True,
     )
 
     early_stop_callback = EarlyStopping(
