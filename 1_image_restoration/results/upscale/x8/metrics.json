@@ -1,0 +1,74 @@
+{
+  "scale": 8,
+  "num_images": 100,
+  "lpips_net_type": "alex",
+  "summary": [
+    {
+      "scale": 8,
+      "method": "opencv_bicubic",
+      "n_images": 100,
+      "PSNR_mean": 20.208039894104004,
+      "PSNR_std": 2.4222209932938545,
+      "SSIM_mean": 0.46663989923894406,
+      "SSIM_std": 0.15468486332747058,
+      "SNR_mean": 14.930588541030884,
+      "SNR_std": 4.892234191914965,
+      "LPIPS_mean": 0.706938793361187,
+      "LPIPS_std": 0.1311667557057398
+    },
+    {
+      "scale": 8,
+      "method": "nafnet_sr",
+      "n_images": 100,
+      "PSNR_mean": 20.745940685272217,
+      "PSNR_std": 2.541126871075782,
+      "SSIM_mean": 0.5057498113811016,
+      "SSIM_std": 0.14947539721805442,
+      "SNR_mean": 15.240039415359497,
+      "SNR_std": 4.67828290689141,
+      "LPIPS_mean": 0.30856049075722697,
+      "LPIPS_std": 0.07913505542035221
+    }
+  ],
+  "comparison": [
+    {
+      "scale": 8,
+      "metric": "PSNR",
+      "opencv_bicubic": 20.208039894104004,
+      "nafnet_sr": 20.745940685272217,
+      "delta": 0.5379007911682123,
+      "improvement": 0.5379007911682123,
+      "better_method": "nafnet_sr"
+    },
+    {
+      "scale": 8,
+      "metric": "SSIM",
+      "opencv_bicubic": 0.46663989923894406,
+      "nafnet_sr": 0.5057498113811016,
+      "delta": 0.03910991214215759,
+      "improvement": 0.03910991214215759,
+      "better_method": "nafnet_sr"
+    },
+    {
+      "scale": 8,
+      "metric": "SNR",
+      "opencv_bicubic": 14.930588541030884,
+      "nafnet_sr": 15.240039415359497,
+      "delta": 0.30945087432861307,
+      "improvement": 0.30945087432861307,
+      "better_method": "nafnet_sr"
+    },
+    {
+      "scale": 8,
+      "metric": "LPIPS",
+      "opencv_bicubic": 0.706938793361187,
+      "nafnet_sr": 0.30856049075722697,
+      "delta": -0.39837830260396007,
+      "improvement": 0.39837830260396007,
+      "better_method": "nafnet_sr"
+    }
+  ],
+  "checkpoint": "models\\upscale\\nafnet_sr_x8\\best-epoch=18-val_psnr=20.25.ckpt",
+  "config": "src\\super_resolution\\train\\config_scale8.yaml",
+  "device": "cuda"
+}

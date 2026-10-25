@@ -1,0 +1,74 @@
+{
+  "scale": 4,
+  "num_images": 100,
+  "lpips_net_type": "alex",
+  "summary": [
+    {
+      "scale": 4,
+      "method": "opencv_bicubic",
+      "n_images": 100,
+      "PSNR_mean": 22.887221603393556,
+      "PSNR_std": 2.6929934028832667,
+      "SSIM_mean": 0.6428578433394432,
+      "SSIM_std": 0.12369053960784737,
+      "SNR_mean": 17.728024392127992,
+      "SNR_std": 5.20731459185985,
+      "LPIPS_mean": 0.4977444429695606,
+      "LPIPS_std": 0.11565306824968777
+    },
+    {
+      "scale": 4,
+      "method": "nafnet_sr",
+      "n_images": 100,
+      "PSNR_mean": 23.91461290359497,
+      "PSNR_std": 2.937613870437692,
+      "SSIM_mean": 0.7132012659311294,
+      "SSIM_std": 0.10492003682501533,
+      "SNR_mean": 18.462251205444336,
+      "SNR_std": 4.897983240103372,
+      "LPIPS_mean": 0.1705108256265521,
+      "LPIPS_std": 0.061962255385672065
+    }
+  ],
+  "comparison": [
+    {
+      "scale": 4,
+      "metric": "PSNR",
+      "opencv_bicubic": 22.887221603393556,
+      "nafnet_sr": 23.91461290359497,
+      "delta": 1.0273913002014154,
+      "improvement": 1.0273913002014154,
+      "better_method": "nafnet_sr"
+    },
+    {
+      "scale": 4,
+      "metric": "SSIM",
+      "opencv_bicubic": 0.6428578433394432,
+      "nafnet_sr": 0.7132012659311294,
+      "delta": 0.07034342259168624,
+      "improvement": 0.07034342259168624,
+      "better_method": "nafnet_sr"
+    },
+    {
+      "scale": 4,
+      "metric": "SNR",
+      "opencv_bicubic": 17.728024392127992,
+      "nafnet_sr": 18.462251205444336,
+      "delta": 0.7342268133163437,
+      "improvement": 0.7342268133163437,
+      "better_method": "nafnet_sr"
+    },
+    {
+      "scale": 4,
+      "metric": "LPIPS",
+      "opencv_bicubic": 0.4977444429695606,
+      "nafnet_sr": 0.1705108256265521,
+      "delta": -0.3272336173430085,
+      "improvement": 0.3272336173430085,
+      "better_method": "nafnet_sr"
+    }
+  ],
+  "checkpoint": "models\\upscale\\nafnet_sr_x4\\best-epoch=26-val_psnr=23.14.ckpt",
+  "config": "src\\super_resolution\\train\\config_scale4.yaml",
+  "device": "cuda"
+}
