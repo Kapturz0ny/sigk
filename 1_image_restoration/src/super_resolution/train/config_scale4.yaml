@@ -1,0 +1,27 @@
+seed: 42
+
+data:
+  train_dir: "data/processed/train_256"
+  test_dir: "data/processed/valid_256"
+  batch_size: 16
+  val_split: 0.1
+  num_workers: 4
+  hr_size: 256
+
+model:
+  name: "nafnet_sr_x4"
+  output_dir: "models/upscale"
+  in_channels: 3
+  out_channels: 3
+  embed_dim: 64
+  num_blocks: 32
+  scale: 4
+  lpips_net_type: "alex"
+
+training:
+  epochs: 100
+  lr: 0.001
+  weight_decay: 0.001
+  early_stopping_patience: 15
+  gradient_clip_val: 1.0
+  precision: "bf16-mixed"
