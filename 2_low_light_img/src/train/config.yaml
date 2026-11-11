@@ -1,0 +1,20 @@
+seed: 42
+
+data:
+  train_dir: "data/processed/train"
+  batch_size: 4
+  patch_size: 512
+  repeat_factor: 5
+  val_split: 0.1
+  num_workers: 4
+
+model:
+  name: "hvi_cidnet"
+  output_dir: "models"
+  channels: [36, 36, 72, 144]
+  heads: [1, 2, 4, 8]
+
+training:
+  epochs: 80
+  lr: 0.0003
+  early_stopping_patience: 35
