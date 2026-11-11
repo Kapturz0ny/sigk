@@ -1,8 +1,11 @@
+import csv
+import multiprocessing as mp
 import os
 
-import imageio
+import imageio.v2 as imageio
 import numpy as np
 import rawpy
+from tqdm.contrib.concurrent import process_map
 
 
 def get_ground_truth(raw):
@@ -42,27 +45,25 @@ def get_linear_image(raw):
 
 def reduce_exposure(linear_img, ev_shift):
     """
-    TODO: Simulate exposure reduction.
-    Hint: A change of -1 EV halves the amount of light.
-    Calculate the scale factor based on 'ev_shift' and multiply the image by it.
+    Simulate exposure reduction.
+    A change of -1 EV halves the amount of light: scale = 2 ^ ev_shift.
     """
-    raise NotImplementedError("Implement exposure reduction logic")
+    scale_factor = 2.0**ev_shift
+    return np.clip(linear_img * scale_factor, 0.0, 1.0)
 
 
 def apply_gamma_correction(img, gamma=2.2):
     """
-    TODO: Apply sRGB gamma correction.
-    Hint: The simplified formula for gamma correction is image ^ (1 / gamma).
+    Apply sRGB gamma correction: image ^ (1 / gamma).
     """
-    raise NotImplementedError("Implement gamma correction logic")
+    return np.power(np.clip(img, 0.0, 1.0), 1.0 / gamma)
 
 
 def convert_to_8bit(img):
     """
-    TODO: Convert the float image (range 0.0 to 1.0) to an 8-bit integer (range 0 to 255).
-    Ensure the returned array has the dtype np.uint8.
+    Convert the float image (range 0.0 to 1.0) to an 8-bit integer (range 0 to 255).
     """
-    raise NotImplementedError("Implement 8-bit conversion logic")
+    return (np.clip(img, 0.0, 1.0) * 255.0).round().astype(np.uint8)
 
 
 def get_low_light(raw, ev_shift=-3.0):
@@ -89,10 +90,8 @@ def process_single_file(file_path, output_gt_dir, output_dark_dir, ev_shift):
     dark_path = os.path.join(output_dark_dir, f"{base_name}_input.png")
 
     if os.path.exists(gt_path) and os.path.exists(dark_path):
-        print(f"Skipping {base_name} - already processed.")
         return
 
-    print(f"Processing {base_name}...")
     try:
         with rawpy.imread(file_path) as raw:
             img_gt = get_ground_truth(raw)
@@ -101,3 +100,42 @@ def process_single_file(file_path, output_gt_dir, output_dark_dir, ev_shift):
         imageio.imsave(dark_path, img_dark)
     except Exception as e:
         print(f"Error processing {base_name}: {e}")
+
+
+def _worker(args):
+    idx, file_path, gt_dir, dark_dir, ev_shift = args
+    np.random.seed(42 + idx)
+    process_single_file(file_path, gt_dir, dark_dir, ev_shift)
+
+
+if __name__ == "__main__":
+    mp.set_start_method("spawn")
+
+    CSV_PATH = "data/raw/RAISE_258.csv"
+    NEF_DIR = "data/raw/nef"
+    PROCESSED_DIR = "data/processed"
+
+    LIMIT = 100
+    TRAIN_COUNT = 80
+    EV_SHIFT = -3.0
+
+    for split in ("train", "test"):
+        os.makedirs(os.path.join(PROCESSED_DIR, split, "gt"), exist_ok=True)
+        os.makedirs(os.path.join(PROCESSED_DIR, split, "input"), exist_ok=True)
+
+    with open(CSV_PATH, encoding="utf-8") as file:
+        rows = list(csv.DictReader(file))[:LIMIT]
+
+    tasks = []
+    for i, row in enumerate(rows):
+        filename = row["File"]
+        if not filename.upper().endswith(".NEF"):
+            filename += ".NEF"
+
+        nef_path = os.path.join(NEF_DIR, filename)
+        split = "train" if i < TRAIN_COUNT else "test"
+        gt_dir = os.path.join(PROCESSED_DIR, split, "gt")
+        dark_dir = os.path.join(PROCESSED_DIR, split, "input")
+        tasks.append((i, nef_path, gt_dir, dark_dir, EV_SHIFT))
+
+    process_map(_worker, tasks, desc="Processing RAW images", chunksize=1)
