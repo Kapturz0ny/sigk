@@ -52,7 +52,7 @@ def main() -> None:
             monitor="val_psnr",
             mode="max",
             save_top_k=1,
-            save_last=True
+            save_last=True,
         ),
         EarlyStopping(
             monitor="val_psnr",
