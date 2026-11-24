@@ -1,0 +1,15 @@
+torch
+torchvision
+
+pytorch-lightning
+pyyaml
+
+lpips
+scikit-image
+opencv-python-headless
+scipy
+git+https://github.com/NVlabs/flip
+
+matplotlib
+tqdm
+tensorboardX

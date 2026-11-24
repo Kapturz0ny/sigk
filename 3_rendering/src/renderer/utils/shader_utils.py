@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass
 
-import utils.config
+from renderer.utils import config
 
 
 @dataclass
@@ -10,10 +10,10 @@ class ShaderCollection:
     vertex_shader: str = None
 
     def assign_shader(self, extension, shader_text):
-        if extension in utils.config.FRAGMENT_SHADER_EXTENSION:
+        if extension in config.FRAGMENT_SHADER_EXTENSION:
             self.fragment_shader = shader_text
 
-        if extension in utils.config.VERTEX_SHADER_EXTENSION:
+        if extension in config.VERTEX_SHADER_EXTENSION:
             self.vertex_shader = shader_text
 
     def is_valid_collection(self):
@@ -52,7 +52,7 @@ def get_shaders(shader_directory_path: str) -> dict[str, ShaderCollection]:
 
         for shader_path in shader_path_list:
             extension = os.path.splitext(shader_path)[1]
-            if extension not in utils.config.get_supported_extensions():
+            if extension not in config.get_supported_extensions():
                 continue
             shader_text = _load_shader(shader_path)
             shader_collection.assign_shader(extension, shader_text)
@@ -61,7 +61,7 @@ def get_shaders(shader_directory_path: str) -> dict[str, ShaderCollection]:
             continue
 
         if not shader_collection.is_valid_collection():
-            raise RuntimeError('Missing vertex or fragment shader')
+            raise RuntimeError("Missing vertex or fragment shader")
 
         shaders[identifier] = shader_collection
 

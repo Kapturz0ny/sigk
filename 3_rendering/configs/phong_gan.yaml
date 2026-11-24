@@ -1,0 +1,44 @@
+seed: 42
+
+data:
+  dir: ../dataset
+  image_size: 128
+  num_workers: 4
+
+model:
+  z_dim: 8
+  z_mode: zero
+  param_dim: 13
+  param_embed:
+    hidden: 256
+    out: 512
+  generator:
+    base: 40
+    groups: 8
+  discriminator:
+    channels: [64, 128, 256, 512, 512]
+    fc_dim: 512
+
+train:
+  epochs: 150
+  batch_size: 64
+  val_batch_size: 64
+  lr: 5.0e-4
+  beta1: 0.5
+  beta2: 0.9
+  critic_iter: 1
+  gp_lambda: 10.0
+  adv_lambda: 0.01
+  l1_lambda: 1.0
+  grad_lambda: 0.5
+  recon_masked: true
+  bg_weight: 0.1
+  critic_burn_in_steps: 0
+  lr_warmup_steps: 100
+  precision: 32-true
+  accelerator: auto
+  devices: auto
+  log_every_n_steps: 10
+  check_val_every_n_epoch: 5
+  save_every_n_epochs: 25
+  output_dir: ../models/phong_gan
